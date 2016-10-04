@@ -50,10 +50,10 @@ public class Test extends Thread {
 			    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
 			    String line;
 			    //!!!!!commented for problems in exceptions!!!!!
-			    /*while ((line = rd.readLine()) != null) {
+			    while ((line = rd.readLine()) != null) {
 			      response.append(line);
 			      response.append('\r');
-			    }*/
+			    }
 			    rd.close();
 //			    System.out.println(response.toString());	//print all response
 			    
