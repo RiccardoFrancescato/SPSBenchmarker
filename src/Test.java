@@ -18,14 +18,15 @@ public class Test extends Thread {
 		super(str);
 	}
 	public void run() {
-		// TODO Auto-generated method stub
 
-		String targetURL = "https://it.wikipedia.org/wiki/Pagina_principale";
-		String urlParameters = "";
+		Main.times.add(makeRequest("https://it.wikipedia.org/wiki/Pagina_principale"));
 		
+	}
+	private long makeRequest(String targetURL){
+		String urlParameters = "";
 		HttpURLConnection connection = null;
-		//System.out.println("Start request");
 		long startTime = System.currentTimeMillis();
+		long endTime = 0;
 		 try {
 			    //Create connection
 			    URL url = new URL(targetURL);
@@ -49,28 +50,22 @@ public class Test extends Thread {
 			    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
 			    String line;
-			    //!!!!!commented for problems in exceptions!!!!!
 			    while ((line = rd.readLine()) != null) {
 			      response.append(line);
 			      response.append('\r');
 			    }
 			    rd.close();
-//			    System.out.println(response.toString());	//print all response
+			    //System.out.println(response.toString());	//print all response
 			    
-			    long endTime = System.currentTimeMillis();
+			    endTime = System.currentTimeMillis();
 			    //System.out.println("Request received");
-			    System.out.println("Time: "+ (endTime-startTime));
-			    Main.times.add(new Long(endTime-startTime));
-			    
 			  } catch (Exception e) {
-			    e.printStackTrace();
 			  } finally {
 			    if (connection != null) {
 			      connection.disconnect();
 			    }
 			  }
-		
-		
+		 return(endTime-startTime);
 	}
 
 }
