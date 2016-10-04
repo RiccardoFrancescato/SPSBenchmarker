@@ -24,7 +24,7 @@ public class Test extends Thread {
 		String urlParameters = "";
 		
 		HttpURLConnection connection = null;
-		System.out.println("Start request");
+		//System.out.println("Start request");
 		long startTime = System.currentTimeMillis();
 		 try {
 			    //Create connection
@@ -49,16 +49,18 @@ public class Test extends Thread {
 			    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
 			    String line;
-			    while ((line = rd.readLine()) != null) {
+			    //!!!!!commented for problems in exceptions!!!!!
+			    /*while ((line = rd.readLine()) != null) {
 			      response.append(line);
 			      response.append('\r');
-			    }
+			    }*/
 			    rd.close();
 //			    System.out.println(response.toString());	//print all response
 			    
 			    long endTime = System.currentTimeMillis();
-			    System.out.println("Request received");
+			    //System.out.println("Request received");
 			    System.out.println("Time: "+ (endTime-startTime));
+			    Main.times.add(new Long(endTime-startTime));
 			    
 			  } catch (Exception e) {
 			    e.printStackTrace();
