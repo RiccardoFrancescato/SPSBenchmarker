@@ -19,7 +19,7 @@ public class Test extends Thread {
 	}
 	public void run() {
 
-		Main.times.add(makeRequest("https://it.wikipedia.org/wiki/Pagina_principale"));
+		Main.times.add(makeRequest("https://192.168.1.10/wikimirror"));
 		
 	}
 	private long makeRequest(String targetURL){
