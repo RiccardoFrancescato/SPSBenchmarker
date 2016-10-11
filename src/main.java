@@ -17,7 +17,7 @@ public class Main {
 			String nextline;
 			int i=0,j=0;
 			Random rng= new Random();
-			int salto= rng.nextInt(10000);
+			int salto= rng.nextInt(16814305/2);
 			while((nextline = buffer.readLine())!=null && i<10){
 				if(j>salto){
 					links.add(nextline);
