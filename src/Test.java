@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 
 /**
  * @author fmondin
@@ -18,8 +19,23 @@ public class Test extends Thread {
 		super(str);
 	}
 	public void run() {
-
-		Main.times.add(makeRequest("https://192.168.1.10/wikimirror"));
+		Random rng= new Random();
+		int avg=2000;
+		int i=rng.nextInt(Main.links.size()-1), j=Main.links.size()-1;
+		while (j>=0){
+			if(i>=Main.links.size()-1){
+				i=0;
+			}
+			try {
+				Thread.sleep((long) (Math.log(rng.nextFloat())*(-1)*avg));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Main.times.add(makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i)));
+			i++;
+			j--;
+		}
 		
 	}
 	private long makeRequest(String targetURL){
@@ -58,7 +74,7 @@ public class Test extends Thread {
 			    //System.out.println(response.toString());	//print all response
 			    
 			    endTime = System.currentTimeMillis();
-			    //System.out.println("Request received");
+			    System.out.println("Request received");
 			  } catch (Exception e) {
 			  } finally {
 			    if (connection != null) {
