@@ -18,7 +18,7 @@ public class Main {
 			int i=0,j=0;
 			Random rng= new Random();
 			int salto= rng.nextInt(16814305/2);
-			while((nextline = buffer.readLine())!=null && i<10){
+			while((nextline = buffer.readLine())!=null && i<50){
 				if(j>salto){
 					links.add(nextline);
 					i++;
@@ -32,7 +32,7 @@ public class Main {
 		ArrayList<Test> threads=new ArrayList();
 		System.out.println("Test started");
 		long startTime = System.currentTimeMillis();
-		for (int n=0; n<1; n++) {
+		for (int n=0; n<10; n++) {
             threads.add(n, new Test(""+n));
             threads.get(n).start();
         }
@@ -42,7 +42,7 @@ public class Main {
 		for (Long i : times) {
 			summ+=i;
 		}
-		System.out.println("AVG: "+ summ/times.size());
+		System.out.println("TNoR: " + times.size() + " AVG: "+ summ/times.size());
 		System.out.println("Test time: "+ (System.currentTimeMillis()-startTime));
 		
 	}

@@ -32,7 +32,10 @@ public class Test extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Main.times.add(makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i)));
+			long app = makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i));
+			if(app>0){
+				Main.times.add(app);
+			}
 			i++;
 			j--;
 		}
@@ -63,19 +66,11 @@ public class Test extends Thread {
 
 			    //Get Response  
 			    InputStream is = connection.getInputStream();
-			    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-			    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-			    String line;
-			    while ((line = rd.readLine()) != null) {
-			      response.append(line);
-			      response.append('\r');
-			    }
-			    rd.close();
-			    //System.out.println(response.toString());	//print all response
 			    
 			    endTime = System.currentTimeMillis();
-			    System.out.println("Request received");
+			    System.out.println("Request received " + (endTime-startTime));
 			  } catch (Exception e) {
+				  System.out.println(e.getMessage());
 			  } finally {
 			    if (connection != null) {
 			      connection.disconnect();
