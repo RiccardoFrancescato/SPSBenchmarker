@@ -16,7 +16,31 @@ public class Test extends Thread {
 	
 	public void run() {
 		
-		Main.times.add(makeRequest("https://192.168.1.10/wikimirror"));
+		int waitTime = 1000;
+		int numLink = 5;
+		String basicUrl = "http://192.168.1.10/wikimirror/index.php/";
+		basicUrl = "https://en.wikipedia.org/wiki/"; //for testing
+		
+		//Each thread make numLink request
+		int i = 0;
+		while (i<numLink){
+			//thread wait
+			try {			
+				System.out.println("Thread: "+this.getId()+" sleep");
+
+				Thread.sleep((long) waitTime );
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Thread: "+this.getId()+" make req: "+i);
+			long reqTime = makeRequest(basicUrl+Main.links.get(i));
+			if(reqTime>0)
+				Main.times.add(reqTime);
+			i++;
+		}
+		
 	}
 	
 	private long makeRequest(String targetURL){
@@ -26,7 +50,7 @@ public class Test extends Thread {
 		long endTime = 0;
 		
 	 	try {
-	    	//Create connection
+	 		//Create connection
 		    URL url = new URL(targetURL);
 		    connection = (HttpURLConnection) url.openConnection();
 		    connection.setRequestMethod("POST");
@@ -45,26 +69,27 @@ public class Test extends Thread {
 
 		    //Get Response  
 		    InputStream is = connection.getInputStream();
-		    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-		    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-		    String line;
-		    while ((line = rd.readLine()) != null) {
-		    	response.append(line);
-		    	response.append('\r');
-		    }
-		    rd.close();
+//		    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+//		    StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
+//		    String line;
+//		    while ((line = rd.readLine()) != null) {
+//		    	response.append(line);
+//		    	response.append('\r');
+//		    }
+//		    rd.close();
 		    //System.out.println(response.toString());	//print all response
 		    
 		    endTime = System.currentTimeMillis();
-		    //System.out.println("Request received");
-		  } catch (Exception e) {
-			  e.printStackTrace();
-		  } finally {
-			    if (connection != null) {
-			      connection.disconnect();
-			    }
-		  }
-		 return(endTime-startTime);
+			//System.out.println("Request received");
+	 	} catch (Exception e) {
+	 		e.printStackTrace();
+	 	} finally {
+	 		if (connection != null) {
+	 			connection.disconnect();
+		    }
+	 	}
+	 	
+ 		return(endTime-startTime);
 	}
 	
 

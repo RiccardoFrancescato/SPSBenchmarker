@@ -17,7 +17,7 @@ public class Main {
 		
 		int numThread = 2;
 		int numTotLines = 16814304;
-		int numLink = 10;
+		int numLink = 5;
 		BufferedReader fileBuffer = null;
 		
 		//Read file with links
@@ -49,7 +49,7 @@ public class Main {
 			}
 		}
 		
-		//
+		//print link for testing
 		for(String s : links){
 			System.out.println(s);
 		}
