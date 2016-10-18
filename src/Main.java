@@ -15,11 +15,12 @@ public class Main {
 		times = new ArrayList<Long>();
 		links = new ArrayList<String>();
 		
-		//Read file with links
+		int numThread = 2;
 		int numTotLines = 16814304;
-		int numLink = 100;
+		int numLink = 10;
 		BufferedReader fileBuffer = null;
 		
+		//Read file with links
 		try {
 			String filePath = "..\\page.csv";
 			fileBuffer = new BufferedReader(new FileReader(filePath));
@@ -48,27 +49,35 @@ public class Main {
 			}
 		}
 		
+		//
+		for(String s : links){
+			System.out.println(s);
+		}
 		
-//		ArrayList<Test> threads = new ArrayList();
-//		
-//		long startTime = System.currentTimeMillis();
-//		
-//		for (int n=0; n<2; n++) {
-//            threads.add(n, new Test(""+n));
-//            threads.get(n).start();
-//        }
-//		
-//		for (Test test : threads) {
-//			test.join();
-//		}
-//		
-//		//calculate the total time
-//		Long summ = new Long(0);
-//		for (Long i : times) {
-//			summ+=i;
-//		}
-//		System.out.println("AVG: "+ ((summ/times.size())/1000)+","+((summ/times.size())%1000));		//times is converted in seconds
-//		System.out.println("Test time: "+ ((System.currentTimeMillis()-startTime)/1000)+","+((System.currentTimeMillis()-startTime)%1000));
+		//Test close loop
+		
+		ArrayList<Test> threads = new ArrayList<Test>();
+		
+		long startTime = System.currentTimeMillis();
+		int i;
+		for (i=0; i<numThread; i++) {
+            threads.add(i, new Test(""+i));
+            threads.get(i).start();
+        }
+		
+		for (Test test : threads) {
+			test.join();
+		}
+		long endTime = System.currentTimeMillis();
+		
+		//Calculate the total time
+		Long totalThreadTime = new Long(0);
+		for (Long j : times) {
+			totalThreadTime+=j;
+		}
+		System.out.println("AVG thread time: "+ ((totalThreadTime/times.size())/1000)+","+((totalThreadTime/times.size())%1000));		//times is converted in seconds
+		System.out.println("Test time: "+ ((endTime-startTime)/1000)+","+((endTime-startTime)%1000));
+		
 		
 	}
 	
