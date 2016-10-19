@@ -17,27 +17,26 @@ public class Test extends Thread {
 	public void run() {
 		
 		int waitTime = 1000;
-		int numLink = 5;
 		String basicUrl = "http://192.168.1.10/wikimirror/index.php/";
 		basicUrl = "https://en.wikipedia.org/wiki/"; //for testing
 		
 		//Each thread make numLink request
 		int i = 0;
-		while (i<numLink){
+		while (i < Main.numLinkPerThread){
 			//thread wait
 			try {			
-				System.out.println("Thread: "+this.getId()+" sleep");
-
+				System.out.println("Thread: "+this.getName()+" sleep");
 				Thread.sleep((long) waitTime );
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
-			System.out.println("Thread: "+this.getId()+" make req: "+i);
-			long reqTime = makeRequest(basicUrl+Main.links.get(i));
-			if(reqTime>0)
-				Main.times.add(reqTime);
+			int indexLink = (Integer.parseInt(this.getName())*Main.numLinkPerThread)+i;
+			System.out.println("Thread: "+this.getName()+" make req: "+i+" link ("+indexLink+"): "+Main.links.get(indexLink));
+//			long reqTime = makeRequest(basicUrl+Main.links.get(i));
+//			if(reqTime>0)
+//				Main.times.add(reqTime);
 			i++;
 		}
 		

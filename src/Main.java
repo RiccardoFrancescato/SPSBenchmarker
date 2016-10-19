@@ -8,6 +8,11 @@ public class Main {
 	
 	public static ArrayList<Long> times;
 	public static ArrayList<String> links;
+	public static String filePath = "..\\safe.csv";
+	public static int numThread = 5;
+	public static int numTotLines = 0;
+	public static int numLinkPerThread = 10;
+	public static int totNumLink = numThread*numLinkPerThread;
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
 		
@@ -15,14 +20,26 @@ public class Main {
 		times = new ArrayList<Long>();
 		links = new ArrayList<String>();
 		
-		int numThread = 2;
-		int numTotLines = 16814304;
-		int numLink = 5;
+		
 		BufferedReader fileBuffer = null;
 		
+		//Read total number of links
+		try {
+			fileBuffer = new BufferedReader(new FileReader(filePath));
+			numTotLines = (int) fileBuffer.lines().count();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(fileBuffer != null){
+				fileBuffer.close();
+			}
+		}
+		
+		System.out.println("Total lines:"+numTotLines);
+
 		//Read file with links
 		try {
-			String filePath = "..\\page.csv";
+			
 			fileBuffer = new BufferedReader(new FileReader(filePath));
 			
 			//Skip a random number of line (to avoid caching problems)
@@ -37,7 +54,7 @@ public class Main {
 			//save the predefined (numLink) number of link
 			i = 0;
 			String nextLine;
-			while((nextLine = fileBuffer.readLine())!=null &&  i<numLink){
+			while((nextLine = fileBuffer.readLine())!=null &&  i<totNumLink){
 				links.add(nextLine);
 				i++;
 			}
@@ -50,9 +67,9 @@ public class Main {
 		}
 		
 		//print link for testing
-		for(String s : links){
-			System.out.println(s);
-		}
+//		for(String s : links){
+//			System.out.println(s);
+//		}
 		
 		//Test close loop
 		
