@@ -20,17 +20,11 @@ public class Test extends Thread {
 	}
 	public void run() {
 		Random rng= new Random();
-		int avg=2000;
-		int i=rng.nextInt(Main.links.size()-1), j=Main.links.size()-1;
+		int avg=10000;
+		int i=rng.nextInt(Main.links.size()-1), j=50;
 		while (j>=0){
 			if(i>=Main.links.size()-1){
 				i=0;
-			}
-			try {
-				Thread.sleep((long) (Math.log(rng.nextFloat())*(-1)*avg));
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			long app = makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i));
 			if(app>0){
@@ -38,6 +32,7 @@ public class Test extends Thread {
 			}
 			i++;
 			j--;
+			try {Thread.sleep((long) (Math.log(rng.nextFloat())*(-1)*avg));} catch (InterruptedException e) {}
 		}
 		
 	}
@@ -49,6 +44,8 @@ public class Test extends Thread {
 		 try {
 			    //Create connection
 			    URL url = new URL(targetURL);
+			    //connection.setConnectTimeout(30000);
+			    //connection.setReadTimeout(30000);
 			    connection = (HttpURLConnection) url.openConnection();
 			    connection.setRequestMethod("POST");
 			    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
