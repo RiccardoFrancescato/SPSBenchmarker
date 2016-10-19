@@ -12,13 +12,13 @@ public class Main {
 		links= new ArrayList();
 		System.out.println("load links");
 		try {
-			String path = "C:\\page.csv";
+			String path = "C:\\Users\\ricca\\Documents\\GitHub\\SPSBenchmarker\\safe.csv";
 			BufferedReader buffer= new BufferedReader(new FileReader(path));
 			String nextline;
 			int i=0,j=0;
 			Random rng= new Random();
-			int salto= rng.nextInt(16814305/2);
-			while((nextline = buffer.readLine())!=null && i<50){
+			int salto=0; //rng.nextInt(57795/2);
+			while((nextline = buffer.readLine())!=null && i<57795){
 				if(j>salto){
 					links.add(nextline);
 					i++;
@@ -32,7 +32,7 @@ public class Main {
 		ArrayList<Test> threads=new ArrayList();
 		System.out.println("Test started");
 		long startTime = System.currentTimeMillis();
-		for (int n=0; n<10; n++) {
+		for (int n=0; n<100; n++) {
             threads.add(n, new Test(""+n));
             threads.get(n).start();
         }
