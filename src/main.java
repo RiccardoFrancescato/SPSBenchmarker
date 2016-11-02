@@ -1,23 +1,21 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Main {
 	public static ArrayList<Long> times;
 	public static ArrayList<String> links;
 	public static void main(String[] args) throws InterruptedException {
 		Long summ = new Long(0);
-		times=new ArrayList();
-		links= new ArrayList();
+		times=new ArrayList<Long>();
+		links= new ArrayList<String>();
 		System.out.println("load links");
 		try {
 			String path = "C:\\Users\\ricca\\Documents\\GitHub\\SPSBenchmarker\\safe.csv";
 			BufferedReader buffer= new BufferedReader(new FileReader(path));
 			String nextline;
 			int i=0,j=0;
-			Random rng= new Random();
-			int salto=0; //rng.nextInt(57795/2);
+			int salto=0;
 			while((nextline = buffer.readLine())!=null && i<57795){
 				if(j>salto){
 					links.add(nextline);
@@ -29,7 +27,7 @@ public class Main {
 			// TODO: handle exception
 		}
 		System.out.println(" links loaded "+links.size());
-		ArrayList<Test> threads=new ArrayList();
+		ArrayList<Test> threads=new ArrayList<Test>();
 		System.out.println("Test started");
 		long startTime = System.currentTimeMillis();
 		for (int n=0; n<100; n++) {
