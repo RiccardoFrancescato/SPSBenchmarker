@@ -21,22 +21,20 @@ public class Test extends Thread {
 	public void run() {
 		Random rng= new Random();
 		int avg=10000;
-		int i=rng.nextInt(Main.links.size()-1), j=50;
+		int i=rng.nextInt(Main.links.size()-1), j=5;
 		while (j>=0){
 			if(i>=Main.links.size()-1){
 				i=0;
 			}
-			long app = makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i));
-			if(app>0){
-				Main.times.add(app);
-			}
+			Pair app = makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i));//"http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i)
+			Main.times.add(app);
 			i++;
 			j--;
 			try {Thread.sleep((long) (Math.log(rng.nextFloat())*(-1)*avg));} catch (InterruptedException e) {}
 		}
 		
 	}
-	private long makeRequest(String targetURL){
+	private Pair makeRequest(String targetURL){
 		String urlParameters = "";
 		HttpURLConnection connection = null;
 		long startTime = System.currentTimeMillis();
@@ -44,15 +42,10 @@ public class Test extends Thread {
 		 try {
 			    //Create connection
 			    URL url = new URL(targetURL);
-			    //connection.setConnectTimeout(30000);
-			    //connection.setReadTimeout(30000);
 			    connection = (HttpURLConnection) url.openConnection();
 			    connection.setRequestMethod("POST");
 			    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-//			    connection.setRequestProperty("Content-Length", Integer.toString(urlParameters.getBytes().length));
 			    connection.setRequestProperty("Content-Language", "en-US");  
-
 			    connection.setUseCaches(false);
 			    connection.setDoOutput(true);
 
@@ -73,7 +66,7 @@ public class Test extends Thread {
 			      connection.disconnect();
 			    }
 			  }
-		 return(endTime-startTime);
+		 return(new Pair(startTime,endTime));
 	}
 
 }
