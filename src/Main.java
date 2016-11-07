@@ -6,16 +6,21 @@ import java.util.Random;
 
 public class Main {
 	
+	//Constants
+	public static final String filePath = "..\\page.csv";
+//	public static final String requestUrl = "http://192.168.1.10/wikimirror/index.php/";
+	public static final String requestUrl = "https://en.wikipedia.org/wiki/"; //for testing
+	public static final int numThread = 2;
+	public static final int numLinkPerThread = 5;	
+	public static final int nWarmUpLinkPerThread = 1;
+	public static final int totNumLink = numThread*numLinkPerThread;
+	
+	//Initializations
 	public static ArrayList<Long> times;
 	public static ArrayList<String> links;
-	public static String filePath = "..\\safe.csv";
-	public static int numThread = 5;
 	public static int numTotLines = 0;
-	public static int numLinkPerThread = 10;
-	public static int totNumLink = numThread*numLinkPerThread;
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
-		
 		
 		times = new ArrayList<Long>();
 		links = new ArrayList<String>();
@@ -34,12 +39,10 @@ public class Main {
 				fileBuffer.close();
 			}
 		}
-		
 		System.out.println("Total lines:"+numTotLines);
 
 		//Read file with links
 		try {
-			
 			fileBuffer = new BufferedReader(new FileReader(filePath));
 			
 			//Skip a random number of line (to avoid caching problems)
@@ -50,8 +53,7 @@ public class Main {
 			while(fileBuffer.readLine()!=null &&  i<skipLine){
 				i++;
 			}
-			
-			//save the predefined (numLink) number of link
+			//save the predefined (totNumLink) number of link
 			i = 0;
 			String nextLine;
 			while((nextLine = fileBuffer.readLine())!=null &&  i<totNumLink){
@@ -65,11 +67,11 @@ public class Main {
 				fileBuffer.close();
 			}
 		}
-		
 		//print link for testing
 //		for(String s : links){
 //			System.out.println(s);
 //		}
+		
 		
 		//Test close loop
 		
@@ -92,6 +94,9 @@ public class Main {
 		for (Long j : times) {
 			totalThreadTime+=j;
 		}
+		//check
+		System.out.println(times.size());
+		
 		System.out.println("AVG thread time: "+ ((totalThreadTime/times.size())/1000)+","+((totalThreadTime/times.size())%1000));		//times is converted in seconds
 		System.out.println("Test time: "+ ((endTime-startTime)/1000)+","+((endTime-startTime)%1000));
 		

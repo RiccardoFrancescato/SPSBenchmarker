@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 
 
 public class Test extends Thread {
@@ -15,35 +16,36 @@ public class Test extends Thread {
 	}
 	
 	public void run() {
-		
-		int waitTime = 1000;
-		String basicUrl = "http://192.168.1.10/wikimirror/index.php/";
-		basicUrl = "https://en.wikipedia.org/wiki/"; //for testing
+		int avgWaitTime = 1000;
 		
 		//Each thread make numLink request
 		int i = 0;
 		while (i < Main.numLinkPerThread){
+			
+			int indexLink = (Integer.parseInt(this.getName())*Main.numLinkPerThread)+i;
+			System.out.println("Thread: "+this.getName()+" make req: "+i+" link ("+indexLink+"): "+Main.links.get(indexLink));
+
+			long reqTime = makeRequest(Main.requestUrl+Main.links.get(i));
+			if(reqTime>0 && i>Main.nWarmUpLinkPerThread)	//Not saving times for first nWarmUpLinkPerThread requests.
+				Main.times.add(reqTime);
+			
 			//thread wait
-			try {			
-				System.out.println("Thread: "+this.getName()+" sleep");
-				Thread.sleep((long) waitTime );
-				
+			try {
+				Random ranGen = new Random();
+				long waitTime = (long) Math.log(ranGen.nextFloat())*(-1)*avgWaitTime;
+				System.out.println("Thread: "+this.getName()+" sleep("+waitTime+")");
+				Thread.sleep(waitTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
-			int indexLink = (Integer.parseInt(this.getName())*Main.numLinkPerThread)+i;
-			System.out.println("Thread: "+this.getName()+" make req: "+i+" link ("+indexLink+"): "+Main.links.get(indexLink));
-//			long reqTime = makeRequest(basicUrl+Main.links.get(i));
-//			if(reqTime>0)
-//				Main.times.add(reqTime);
 			i++;
 		}
 		
 	}
 	
 	private long makeRequest(String targetURL){
-		String urlParameters = "";
+//		String urlParameters = "";
 		HttpURLConnection connection = null;
 		long startTime = System.currentTimeMillis();
 		long endTime = 0;
@@ -63,7 +65,7 @@ public class Test extends Thread {
 
 		    //Send request
 		    DataOutputStream wr = new DataOutputStream (connection.getOutputStream());
-		    wr.writeBytes(urlParameters);
+//		    wr.writeBytes(urlParameters);
 		    wr.close();
 
 		    //Get Response  
