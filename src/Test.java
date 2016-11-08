@@ -16,7 +16,7 @@ public class Test extends Thread {
 	}
 	
 	public void run() {
-		int avgWaitTime = 1000;
+		
 		
 		//Each thread make numLink request
 		int i = 0;
@@ -24,20 +24,11 @@ public class Test extends Thread {
 			
 			int indexLink = (Integer.parseInt(this.getName())*Main.numLinkPerThread)+i;
 			System.out.println("Thread: "+this.getName()+" make req: "+i+" link ("+indexLink+"): "+Main.links.get(indexLink));
-
+			threadWait();
 			long reqTime = makeRequest(Main.requestUrl+Main.links.get(i));
 			if(reqTime>0 && i>Main.nWarmUpLinkPerThread)	//Not saving times for first nWarmUpLinkPerThread requests.
 				Main.times.add(reqTime);
 			
-			//thread wait
-			try {
-				Random ranGen = new Random();
-				long waitTime = (long) Math.log(ranGen.nextFloat())*(-1)*avgWaitTime;
-				System.out.println("Thread: "+this.getName()+" sleep("+waitTime+")");
-				Thread.sleep(waitTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			
 			i++;
 		}
@@ -91,6 +82,19 @@ public class Test extends Thread {
 	 	}
 	 	
  		return(endTime-startTime);
+	}
+	
+	private void threadWait(){
+		int avgWaitTime = 1000;
+		//thread wait
+		try {
+			Random ranGen = new Random();
+			long waitTime = Math.round(-Math.log(Math.random())*avgWaitTime);
+			System.out.println("Thread: "+this.getName()+" sleep("+waitTime+")");
+			Thread.sleep(waitTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 

@@ -1,18 +1,26 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+//Salvo csv con timestamp per thread
+//calcolo media, varianza con excel
+//varianza diviso 1.000.000 per avere la varianza in secondi (è al quadrato quindi diviso per 1M non 1000)
+//Tasso di variabilità = varianza / media
+
+
+
 public class Main {
 	
 	//Constants
-	public static final String filePath = "..\\page.csv";
-//	public static final String requestUrl = "http://192.168.1.10/wikimirror/index.php/";
-	public static final String requestUrl = "https://en.wikipedia.org/wiki/"; //for testing
-	public static final int numThread = 2;
-	public static final int numLinkPerThread = 5;	
-	public static final int nWarmUpLinkPerThread = 1;
+	public static final String filePath = "..\\safe.csv";
+	public static final String requestUrl = "http://192.168.1.10/wikimirror/index.php/";
+//	public static final String requestUrl = "https://en.wikipedia.org/wiki/"; //for testing
+	public static final int numThread = 5;
+	public static final int numLinkPerThread = 40;	
+	public static final int nWarmUpLinkPerThread = 10;
 	public static final int totNumLink = numThread*numLinkPerThread;
 	
 	//Initializations
@@ -93,6 +101,7 @@ public class Main {
 		Long totalThreadTime = new Long(0);
 		for (Long j : times) {
 			totalThreadTime+=j;
+			System.out.println(j);
 		}
 		//check
 		System.out.println(times.size());
@@ -100,6 +109,15 @@ public class Main {
 		System.out.println("AVG thread time: "+ ((totalThreadTime/times.size())/1000)+","+((totalThreadTime/times.size())%1000));		//times is converted in seconds
 		System.out.println("Test time: "+ ((endTime-startTime)/1000)+","+((endTime-startTime)%1000));
 		
+		
+		//Save result in csv
+		FileWriter FW = new FileWriter("..\\testResults.csv");
+		FW.write("");
+		for (Long j : times) {
+			FW.append(j.toString());
+			FW.append('\n');
+		}
+		FW.close();
 		
 	}
 	
