@@ -20,12 +20,14 @@ public class Test extends Thread {
 	}
 	public void run() {
 		Random rng= new Random();
-		int avg=10000;
-		int i=rng.nextInt(Main.links.size()-1), j=5;
+		int avg=1000;
+		int i=rng.nextInt(Main.links.size()-1), j=100;
 		while (j>=0){
 			if(i>=Main.links.size()-1){
 				i=0;
 			}
+			System.out.println("thread: "+this.getName() +" remaing: " + j);
+			try {Thread.sleep((long) (Math.log(rng.nextFloat())*(-1)*avg));} catch (InterruptedException e) {}
 			Pair app = makeRequest("http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i));//"http://192.168.1.10/wikimirror/index.php/"+Main.links.get(i)
 			Main.times.add(app);
 			i++;
@@ -37,11 +39,12 @@ public class Test extends Thread {
 	private Pair makeRequest(String targetURL){
 		String urlParameters = "";
 		HttpURLConnection connection = null;
-		long startTime = System.currentTimeMillis();
+		long startTime = 0;
 		long endTime = 0;
 		 try {
 			    //Create connection
 			    URL url = new URL(targetURL);
+			    startTime = System.currentTimeMillis();
 			    connection = (HttpURLConnection) url.openConnection();
 			    connection.setRequestMethod("POST");
 			    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

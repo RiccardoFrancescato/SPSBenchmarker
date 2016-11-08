@@ -9,6 +9,9 @@ public class Main {
 	public static ArrayList<String> links;
 	public static void main(String[] args) throws InterruptedException, IOException {
 		Long summ = new Long(0);
+		Long avg = new Long(0);
+		Long var = new Long(0);
+		Long ntest = new Long(0);
 		Long warmUp = new Long(200);//ms of warm up
 		times=new ArrayList<Pair>();
 		links= new ArrayList<String>();
@@ -33,7 +36,7 @@ public class Main {
 		ArrayList<Test> threads=new ArrayList<Test>();
 		System.out.println("Test started");
 		long startTime = System.currentTimeMillis();
-		for (int n=0; n<10; n++) {
+		for (int n=0; n<1; n++) {
             threads.add(n, new Test(""+n));
             threads.get(n).start();
         }
@@ -46,13 +49,23 @@ public class Main {
 			writer.append(',');
 			writer.append(i.getSecond().toString());
 			writer.append('\n');
-			if((long)i.getFirst()>=startTime+warmUp)
-			summ+=(long)i.getSecond()-(long)i.getFirst();
+			if((long)i.getFirst()>=startTime+warmUp){
+				summ+=(long)i.getSecond()-(long)i.getFirst();
+				ntest++;
+			}
 			
 		}
 		writer.flush();
 		writer.close();
-		System.out.println("TNoR: " + times.size() + " AVG: "+ summ/times.size());
+		avg = summ/ntest;
+		Long ss = new Long(0);
+		for (Pair i : times) {
+			if((long)i.getFirst()>=startTime+warmUp)
+				ss+=(((long)i.getSecond()-(long)i.getFirst() )-avg)^2;
+			
+		}
+		var = ss/ntest; 
+		System.out.println("TNoR: " + ntest + " AVG: "+ avg + "VAR: " + var);
 		System.out.println("Test time: "+ (System.currentTimeMillis()-startTime));
 		
 	}
