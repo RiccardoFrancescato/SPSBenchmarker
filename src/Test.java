@@ -85,7 +85,7 @@ public class Test extends Thread {
 	}
 	
 	private void threadWait(){
-		int avgWaitTime = 1000;
+		int avgWaitTime = 2000;
 		//thread wait
 		try {
 			Random ranGen = new Random();

@@ -15,12 +15,12 @@ import java.util.Random;
 public class Main {
 	
 	//Constants
-	public static final String filePath = "..\\safe.csv";
+	public static final String filePath = "safe.csv";
 	public static final String requestUrl = "http://192.168.1.10/wikimirror/index.php/";
 //	public static final String requestUrl = "https://en.wikipedia.org/wiki/"; //for testing
-	public static final int numThread = 5;
-	public static final int numLinkPerThread = 40;	
-	public static final int nWarmUpLinkPerThread = 10;
+	public static final int numThread = 3;
+	public static final int numLinkPerThread = 100;	
+	public static final int nWarmUpLinkPerThread = 5;
 	public static final int totNumLink = numThread*numLinkPerThread;
 	
 	//Initializations
@@ -111,7 +111,7 @@ public class Main {
 		
 		
 		//Save result in csv
-		FileWriter FW = new FileWriter("..\\testResults.csv");
+		FileWriter FW = new FileWriter("..\\6dec-testResults"+numThread+".csv");
 		FW.write("");
 		for (Long j : times) {
 			FW.append(j.toString());
